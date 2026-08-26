@@ -1,0 +1,544 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Service Desk - Track Request</title>
+
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="../CSS/components.css">
+
+
+    <style>
+
+        /* ========================================
+           Track Request
+        ======================================== */
+
+        .track-container {
+
+            width: 100%;
+
+            max-width: 850px;
+
+            margin: 40px auto;
+
+            padding: 30px;
+
+            box-sizing: border-box;
+
+            background: #ffffff;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.05);
+        }
+
+
+        .track-container h2 {
+
+            margin: 0 0 8px;
+
+            color: #111827;
+        }
+
+
+        .track-container > p {
+
+            margin: 0 0 25px;
+
+            color: #6b7280;
+        }
+
+
+        /* ========================================
+           Loading
+        ======================================== */
+
+        .track-loading {
+
+            padding: 40px;
+
+            text-align: center;
+
+            color: #6b7280;
+        }
+
+
+        /* ========================================
+           Error
+        ======================================== */
+
+        .track-error {
+
+            padding: 15px;
+
+            margin-bottom: 20px;
+
+            border-radius: 8px;
+
+            background: #fee2e2;
+
+            color: #b91c1c;
+
+            font-size: 14px;
+        }
+
+
+        /* ========================================
+           Request Details
+        ======================================== */
+
+        .track-details {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 16px;
+        }
+
+
+        .track-detail {
+
+            padding: 16px;
+
+            background: #f9fafb;
+
+            border-radius: 8px;
+        }
+
+
+        .track-detail.full {
+
+            grid-column: 1 / -1;
+        }
+
+
+        .track-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            color: #6b7280;
+
+            text-transform: uppercase;
+        }
+
+
+        .track-value {
+
+            font-size: 15px;
+
+            color: #111827;
+
+            word-break: break-word;
+        }
+
+
+        .description-value {
+
+            white-space: pre-wrap;
+
+            line-height: 1.6;
+        }
+
+
+        /* ========================================
+           Status
+        ======================================== */
+
+        .track-status {
+
+            display: inline-flex;
+
+            padding: 7px 12px;
+
+            border-radius: 999px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .status-open {
+
+            background: #dbeafe;
+
+            color: #1d4ed8;
+        }
+
+
+        .status-in-progress {
+
+            background: #fef3c7;
+
+            color: #92400e;
+        }
+
+
+        .status-waiting-for-user {
+
+            background: #f3e8ff;
+
+            color: #7e22ce;
+        }
+
+
+        .status-resolved {
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+
+        .status-closed {
+
+            background: #e5e7eb;
+
+            color: #374151;
+        }
+
+
+        /* ========================================
+           Back Button
+        ======================================== */
+
+        .track-actions {
+
+            margin-top: 25px;
+        }
+
+
+        .track-actions a {
+
+            display: inline-block;
+
+            padding: 10px 16px;
+
+            border-radius: 8px;
+
+            background: #2563eb;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .track-actions a:hover {
+
+            background: #1d4ed8;
+        }
+
+
+        /* ========================================
+           Responsive
+        ======================================== */
+
+        @media (max-width: 600px) {
+
+            .track-container {
+
+                margin: 20px auto;
+
+                padding: 20px;
+
+                border-radius: 10px;
+
+            }
+
+
+            .track-details {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .track-detail.full {
+
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================================
+         Header
+    ================================= -->
+
+    <header>
+
+        <h1>Service Desk</h1>
+
+        <nav>
+
+            <nav>
+                <a href="home.html">Home</a>
+                <a href="index.html">Submit Request</a>
+                <a href="track.html">Track Request</a>
+            </nav>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================================
+         Main
+    ================================= -->
+
+    <main>
+
+        <section class="track-container">
+
+            <h2>
+                Track Your Request
+            </h2>
+
+            <p>
+                View your request details and current status.
+            </p>
+
+
+            <!-- Loading -->
+
+            <div
+                id="trackLoading"
+                class="track-loading"
+            >
+                Loading request...
+            </div>
+
+
+            <!-- Error -->
+
+            <div
+                id="trackError"
+                class="track-error"
+                style="display: none;"
+            ></div>
+
+
+            <!-- Request Details -->
+
+            <div
+                id="trackDetails"
+                class="track-details"
+                style="display: none;"
+            >
+
+
+                <div class="track-detail">
+
+                    <span class="track-label">
+                        Request ID
+                    </span>
+
+                    <span
+                        id="detailId"
+                        class="track-value"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="track-detail">
+
+                    <span class="track-label">
+                        Status
+                    </span>
+
+                    <span
+                        id="detailStatus"
+                        class="track-status"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="track-detail">
+
+                    <span class="track-label">
+                        Title
+                    </span>
+
+                    <span
+                        id="detailTitle"
+                        class="track-value"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="track-detail">
+
+                    <span class="track-label">
+                        Category
+                    </span>
+
+                    <span
+                        id="detailCategory"
+                        class="track-value"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="track-detail">
+
+                    <span class="track-label">
+                        Priority
+                    </span>
+
+                    <span
+                        id="detailPriority"
+                        class="track-value"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="track-detail">
+
+                    <span class="track-label">
+                        Requester
+                    </span>
+
+                    <span
+                        id="detailRequesterName"
+                        class="track-value"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="track-detail full"
+                >
+
+                    <span class="track-label">
+                        Description
+                    </span>
+
+                    <div
+                        id="detailDescription"
+                        class="track-value description-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+                <div class="track-detail">
+
+                    <span class="track-label">
+                        Created
+                    </span>
+
+                    <span
+                        id="detailCreatedAt"
+                        class="track-value"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="track-detail">
+
+                    <span class="track-label">
+                        Last Updated
+                    </span>
+
+                    <span
+                        id="detailUpdatedAt"
+                        class="track-value"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- Actions -->
+
+            <div
+                id="trackActions"
+                class="track-actions"
+                style="display: none;"
+            >
+
+                <a href="index.html">
+                    Submit Another Request
+                </a>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- ================================
+         JavaScript
+    ================================= -->
+
+    <script src="../JavaScript/config.js"></script>
+    <script src="../JavaScript/services/api.js"></script>
+    <script src="../JavaScript/track-request.js"></script>
+
+
+</body>
+
+</html>
+

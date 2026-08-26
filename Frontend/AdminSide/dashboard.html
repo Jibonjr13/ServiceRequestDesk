@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Service Request Dashboard</title>
+
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="../CSS/components.css">
+    <link rel="stylesheet" href="../CSS/dashboard.css">
+</head>
+
+<body>
+
+    <!-- ========================================
+         Dashboard Header
+    ========================================= -->
+    <header class="dashboard-header">
+
+        <div class="dashboard-header-content">
+
+            <div>
+                <h1>Service Request Dashboard</h1>
+
+                <p>
+                    Manage and monitor service requests
+                </p>
+            </div>
+
+            <div class="dashboard-header-actions">
+
+                <button
+                    id="refreshButton"
+                    class="btn btn-secondary"
+                    type="button">
+                    Refresh
+                </button>
+
+                <nav class="dashboard-nav">
+
+                    <a
+                        href="dashboard.html"
+                        class="active">
+                        Dashboard
+                    </a>
+
+                    <a href="admin-login.html">
+                        Logout
+                    </a>
+
+                </nav>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ========================================
+         Main Dashboard
+    ========================================= -->
+    <main class="dashboard-container">
+
+
+        <!-- ========================================
+             Statistics
+        ========================================= -->
+        <section class="statistics-section">
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    Total Requests
+                </span>
+
+                <strong
+                    id="totalRequests"
+                    class="stat-value">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    Open
+                </span>
+
+                <strong
+                    id="openRequests"
+                    class="stat-value">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    In Progress
+                </span>
+
+                <strong
+                    id="inProgressRequests"
+                    class="stat-value">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    Waiting for User
+                </span>
+
+                <strong
+                    id="waitingRequests"
+                    class="stat-value">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    Resolved
+                </span>
+
+                <strong
+                    id="resolvedRequests"
+                    class="stat-value">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    Closed
+                </span>
+
+                <strong
+                    id="closedRequests"
+                    class="stat-value">
+                    0
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================
+             Search & Filters
+        ========================================= -->
+        <section class="filter-section">
+
+            <div class="filter-header">
+
+                <div>
+
+                    <h2>
+                        Search & Filter
+                    </h2>
+
+                    <p>
+                        Find requests using multiple filters
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="clearFiltersButton"
+                    class="btn btn-secondary"
+                    type="button">
+
+                    Clear Filters
+
+                </button>
+
+            </div>
+
+
+            <div class="filter-grid">
+
+
+                <!-- Search -->
+                <div class="form-group">
+
+                    <label for="searchInput">
+                        Search
+                    </label>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search title, description, requester...">
+
+                </div>
+
+
+                <!-- Status -->
+                <div class="form-group">
+
+                    <label for="statusFilter">
+                        Status
+                    </label>
+
+                    <select id="statusFilter">
+
+                        <option value="">
+                            All Statuses
+                        </option>
+
+                        <option value="OPEN">
+                            Open
+                        </option>
+
+                        <option value="IN_PROGRESS">
+                            In Progress
+                        </option>
+
+                        <option value="WAITING_FOR_USER">
+                            Waiting for User
+                        </option>
+
+                        <option value="RESOLVED">
+                            Resolved
+                        </option>
+
+                        <option value="CLOSED">
+                            Closed
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Priority -->
+                <div class="form-group">
+
+                    <label for="priorityFilter">
+                        Priority
+                    </label>
+
+                    <select id="priorityFilter">
+
+                        <option value="">
+                            All Priorities
+                        </option>
+
+                        <option value="LOW">
+                            Low
+                        </option>
+
+                        <option value="MEDIUM">
+                            Medium
+                        </option>
+
+                        <option value="HIGH">
+                            High
+                        </option>
+
+                        <option value="URGENT">
+                            Urgent
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Category -->
+                <div class="form-group">
+
+                    <label for="categoryFilter">
+                        Category
+                    </label>
+
+                    <select id="categoryFilter">
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        <option value="HARDWARE">
+                            Hardware
+                        </option>
+
+                        <option value="SOFTWARE">
+                            Software
+                        </option>
+
+                        <option value="ACCESS">
+                            Access
+                        </option>
+
+                        <option value="NETWORK">
+                            Network
+                        </option>
+
+                        <option value="OTHER">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Assigned To -->
+                <div class="form-group">
+
+                    <label for="assignedToFilter">
+                        Assigned To
+                    </label>
+
+                    <select id="assignedToFilter">
+
+                        <option value="">
+                            All Support People
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Active -->
+                <div class="form-group checkbox-group">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="activeFilter">
+
+                        <span>
+                            Active requests only
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================
+             Dashboard Message
+        ========================================= -->
+        <div
+            id="dashboardMessage"
+            class="dashboard-message"
+            aria-live="polite">
+        </div>
+
+
+        <!-- ========================================
+             Loading
+        ========================================= -->
+        <div
+            id="loadingState"
+            class="loading-state hidden">
+
+            <div class="loading-spinner"></div>
+
+            <p>
+                Loading requests...
+            </p>
+
+        </div>
+
+
+        <!-- ========================================
+             Empty State
+        ========================================= -->
+        <div
+            id="emptyState"
+            class="empty-state hidden">
+
+            <h3>
+                No requests found
+            </h3>
+
+            <p>
+                There are no requests matching your current filters.
+            </p>
+
+        </div>
+
+
+        <!-- ========================================
+             Request Table
+        ========================================= -->
+        <section
+            id="requestTableSection"
+            class="request-table-section hidden">
+
+            <div class="table-header">
+
+                <div>
+
+                    <h2>
+                        Requests
+                    </h2>
+
+                    <span id="requestCount">
+                        0 request(s)
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Requester</th>
+                            <th>Category</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Assigned To</th>
+                            <th>Updated</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="requestTableBody">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ========================================
+         Request Modal
+    ========================================= -->
+    <div
+        id="requestModal"
+        class="modal hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="requestModalTitle">
+
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+
+                <h2 id="requestModalTitle">
+                    Request Details
+                </h2>
+
+                <button
+                    id="closeModalButton"
+                    class="modal-close"
+                    type="button"
+                    aria-label="Close modal">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <!-- ========================================
+                 Request Details
+            ========================================= -->
+            <div class="request-details">
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        ID
+                    </span>
+
+                    <span
+                        id="detailId"
+                        class="detail-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Title
+                    </span>
+
+                    <span
+                        id="detailTitle"
+                        class="detail-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item detail-description">
+
+                    <span class="detail-label">
+                        Description
+                    </span>
+
+                    <span
+                        id="detailDescription"
+                        class="detail-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Requester
+                    </span>
+
+                    <span
+                        id="detailRequesterName"
+                        class="detail-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Email
+                    </span>
+
+                    <span
+                        id="detailRequesterEmail"
+                        class="detail-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Category
+                    </span>
+
+                    <span
+                        id="detailCategory"
+                        class="detail-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Priority
+                    </span>
+
+                    <span
+                        id="detailPriority"
+                        class="detail-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Status
+                    </span>
+
+                    <span
+                        id="detailStatus"
+                        class="detail-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Assigned To
+                    </span>
+
+                    <span
+                        id="detailAssignedTo"
+                        class="detail-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Created
+                    </span>
+
+                    <span
+                        id="detailCreatedAt"
+                        class="detail-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Updated
+                    </span>
+
+                    <span
+                        id="detailUpdatedAt"
+                        class="detail-value">
+                        -
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================
+                 Modal Message
+            ========================================= -->
+            <div
+                id="modalMessage"
+                class="modal-message"
+                aria-live="polite">
+            </div>
+
+
+            <!-- ========================================
+                 Request Management
+            ========================================= -->
+            <div class="request-actions">
+
+                <h3>
+                    Manage Request
+                </h3>
+
+
+                <!-- Status -->
+                <div class="action-group">
+
+                    <label for="statusAction">
+                        Change Status
+                    </label>
+
+                    <select id="statusAction">
+
+                        <option value="OPEN">
+                            Open
+                        </option>
+
+                        <option value="IN_PROGRESS">
+                            In Progress
+                        </option>
+
+                        <option value="WAITING_FOR_USER">
+                            Waiting for User
+                        </option>
+
+                        <option value="RESOLVED">
+                            Resolved
+                        </option>
+
+                        <option value="CLOSED">
+                            Closed
+                        </option>
+
+                    </select>
+
+                    <button
+                        id="updateStatusButton"
+                        class="btn btn-primary"
+                        type="button">
+
+                        Update Status
+
+                    </button>
+
+                </div>
+
+
+                <!-- Priority -->
+                <div class="action-group">
+
+                    <label for="priorityAction">
+                        Change Priority
+                    </label>
+
+                    <select id="priorityAction">
+
+                        <option value="LOW">
+                            Low
+                        </option>
+
+                        <option value="MEDIUM">
+                            Medium
+                        </option>
+
+                        <option value="HIGH">
+                            High
+                        </option>
+
+                        <option value="URGENT">
+                            Urgent
+                        </option>
+
+                    </select>
+
+                    <button
+                        id="updatePriorityButton"
+                        class="btn btn-primary"
+                        type="button">
+
+                        Update Priority
+
+                    </button>
+
+                </div>
+
+
+                <!-- Assignment -->
+                <div class="action-group">
+
+                    <label for="assignedToAction">
+                        Assign To
+                    </label>
+
+                    <select id="assignedToAction">
+
+                        <option value="">
+                            Select support person
+                        </option>
+
+                    </select>
+
+                    <button
+                        id="assignButton"
+                        class="btn btn-primary"
+                        type="button">
+
+                        Assign
+
+                    </button>
+
+                </div>
+
+
+                <!-- Internal Note -->
+                <div class="action-group notes-section">
+
+                    <label for="noteInput">
+                        Internal Note
+                    </label>
+
+                    <textarea
+                        id="noteInput"
+                        rows="4"
+                        maxlength="5000"
+                        placeholder="Write an internal note..."></textarea>
+
+                    <button
+                        id="addNoteButton"
+                        class="btn btn-primary"
+                        type="button">
+
+                        Add Note
+
+                    </button>
+
+                </div>
+
+
+                <!-- Notes -->
+                <div class="notes-list">
+
+                    <h3>
+                        Internal Notes
+                    </h3>
+
+                    <div id="notesContainer">
+
+                        <p class="notes-empty">
+                            No notes available.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================
+         JavaScript
+    ========================================= -->
+    <script src="../JavaScript/config.js"></script>
+
+    <script src="../JavaScript/services/api.js"></script>
+
+    <script src="../JavaScript/dashboard.js"></script>
+
+</body>
+
+</html>

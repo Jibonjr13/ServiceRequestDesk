@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Service Desk - Submit Request</title>
+
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="../CSS/components.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================================
+         Header
+    ================================= -->
+
+    <header>
+
+        <h1>Service Desk</h1>
+
+        <nav>
+
+            <a href="home.html">Home</a>
+            <a href="index.html">Submit Request</a>
+
+            <a href="track.html">
+                Track Request
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================================
+         Main
+    ================================= -->
+
+    <main>
+
+        <section class="request-form-container">
+
+            <h2>
+                Submit a Service Request
+            </h2>
+
+            <p>
+                Describe your problem and submit a request
+                to the support team.
+            </p>
+
+
+            <!-- ================================
+                 Request Form
+            ================================= -->
+
+            <form id="requestForm">
+
+
+                <!-- Title -->
+
+                <div class="form-group">
+
+                    <label for="title">
+                        Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Enter request title"
+                        maxlength="255"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Description -->
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Describe your problem"
+                        rows="6"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- Requester Name -->
+
+                <div class="form-group">
+
+                    <label for="requesterName">
+                        Your Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="requesterName"
+                        name="requesterName"
+                        placeholder="Enter your name"
+                        maxlength="255"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Requester Email -->
+
+                <div class="form-group">
+
+                    <label for="requesterEmail">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="requesterEmail"
+                        name="requesterEmail"
+                        placeholder="Enter your email"
+                        maxlength="255"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Category -->
+
+                <div class="form-group">
+
+                    <label for="category">
+                        Category
+                    </label>
+
+                    <select
+                        id="category"
+                        name="category"
+                        required
+                    >
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="HARDWARE">
+                            Hardware
+                        </option>
+
+                        <option value="SOFTWARE">
+                            Software
+                        </option>
+
+                        <option value="ACCESS">
+                            Access
+                        </option>
+
+                        <option value="NETWORK">
+                            Network
+                        </option>
+
+                        <option value="OTHER">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Priority -->
+
+                <div class="form-group">
+
+                    <label for="priority">
+                        Priority
+                    </label>
+
+                    <select
+                        id="priority"
+                        name="priority"
+                        required
+                    >
+
+                        <option value="">
+                            Select priority
+                        </option>
+
+                        <option value="LOW">
+                            Low
+                        </option>
+
+                        <option value="MEDIUM">
+                            Medium
+                        </option>
+
+                        <option value="HIGH">
+                            High
+                        </option>
+
+                        <option value="URGENT">
+                            Urgent
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Submit Button -->
+
+                <button
+                    type="submit"
+                    id="submitButton"
+                >
+                    Submit Request
+                </button>
+
+
+                <!-- Message -->
+
+                <div
+                    id="message"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================================
+         JavaScript
+    ================================= -->
+
+    <script src="../JavaScript/config.js"></script>
+    <script src="../JavaScript/services/api.js"></script>
+    <script src="../JavaScript/create-request.js"></script>
+
+
+</body>
+
+</html>
+
