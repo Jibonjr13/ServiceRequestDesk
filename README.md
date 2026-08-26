@@ -101,7 +101,7 @@ The application uses MySQL as its database.
 
 ### 1. Create the Database
 
-Open MySQL or phpMyAdmin and run:
+Open MySQL and run:
 
 ```sql
 CREATE DATABASE service_desk;
